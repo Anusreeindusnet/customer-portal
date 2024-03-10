@@ -37,10 +37,13 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/customer/**").hasAnyAuthority("USER")
                         .anyRequest().authenticated())
+                //Set session policy=STATELESS
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/auth/**", "/public/**", "/admin/**", "/user/**"))
                 .authenticationProvider(authenticationProvider())
+
+               // Add Jwt Authentication Filter
                 .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
